@@ -1,5 +1,5 @@
 # Deploying Static Websites
-### When you have successfully deployed this static website to both github pages and to firebase, open up the WRITEHERE.md file and list your 2 urls to the deployed site and answer the question.
+### When you have successfully deployed this static website to both github pages and to firebase, open up the WRITEHERE.md file and list your 2 urls to the deployed site and answer the question listed.
 
 
 # Github Pages:
