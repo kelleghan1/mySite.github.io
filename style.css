@@ -1,0 +1,17 @@
+h1 {
+  color: blue;
+  font-size: 2em;
+  text-align: center;
+}
+
+body {
+  background: black;
+}
+
+div {
+  background-image: url("http://thehiggsweldon.com/wp-content/uploads/2015/05/Cyberspace.jpg");
+  background-size: cover;
+  height: 500px;
+  width: 500px;
+  margin: 0 auto;
+}
