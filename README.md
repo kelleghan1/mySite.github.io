@@ -12,13 +12,24 @@
 
   mySite.github.io
   ```
+
 * Now add the remote from that online repo using
   ```
   git remote add origin <ssh>
   ```
+
 to your local repository and use git add, git commit, git push
 
-* Now you can use the name of your repo as a url in the browser and it should be hosted there for you!
+* In the terminal, you will have to create a gh-pages branch:
+```
+$ git checkout -b gh-pages
+```
+* From within that branch push your code up to github:
+```
+$ git push origin gh-pages
+```
+
+* Go to into the settings of your .github.io online repo and you should see a link in the GitHub Pages section where your site has been published! (at first it will say your site is ready to be published, but after you visit the url it should complete the publishing process)
 
 ### Additional resources:
 * https://pages.github.com/
