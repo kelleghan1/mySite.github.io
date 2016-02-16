@@ -38,7 +38,7 @@ $ git push origin gh-pages
 
 
 # Firebase Static Deployment
-# Sign up for an account at firebase.com using google oauth
+### Sign up for an account at firebase.com using the google login option
 
 * Then you'll need to get the command line tools:
 ```
