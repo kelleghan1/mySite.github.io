@@ -38,7 +38,9 @@ $ git push origin gh-pages
 
 
 # Firebase Static Deployment
-* First of all you'll need to get the command line tools:
+# Sign up for an account at firebase.com using google oauth
+
+* Then you'll need to get the command line tools:
 ```
 $ npm install -g firebase-tools
 ```
