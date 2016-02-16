@@ -49,6 +49,10 @@ $ npm install -g firebase-tools
 ```
 $ npm update -g firebase-tools
 ```
+* Login to firebase from the terminal using this command:
+```
+$ firebase login
+```
 
 * Now in the root of your project directory where you have your index.html file, initialize this directory with firebase like this:
 ```
