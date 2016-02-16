@@ -1,4 +1,5 @@
 # Deploying Static Websites
+* Github link: https://github.com/gSchool/staticDeployment
 ### Fork and clone this repo to your local machine to get started
 
 ### When you have successfully deployed this static website to both github pages and to firebase, open up the WRITEHERE.md file and list your 2 urls to the deployed site and answer the question listed.
