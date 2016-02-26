@@ -66,6 +66,7 @@ $ firebase init
 
 ```
 {
+
   "firebase": "myfirebase",
   "public": "./",
   "ignore": [
@@ -73,10 +74,12 @@ $ firebase init
     "**/.*",
     "**/node_modules/**"
   ]
+
 }
 ```
 
 * When you have all of that configuration completed, run this command in the root of your directory to get your code into a deployed state:
+
 ```
 $ firebase deploy
 ```
