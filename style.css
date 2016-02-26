@@ -9,9 +9,8 @@ body {
 }
 
 div {
-  background-image: url("http://thehiggsweldon.com/wp-content/uploads/2015/05/Cyberspace.jpg");
-  background-size: cover;
   height: 500px;
   width: 500px;
   margin: 0 auto;
+  background-color: blue;
 }
