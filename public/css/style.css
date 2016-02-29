@@ -48,10 +48,9 @@ table {
 
 body {
   background: #000;
-  margin: 0; }
+  background-image: url("../year.jpg"); }
 
 canvas {
   display: block;
   float: none;
-  background-color: blue;
   margin: 0; }

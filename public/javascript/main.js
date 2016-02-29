@@ -10,20 +10,28 @@ $(function(){
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
-
   $(window).resize(function (){
     canvas.height = window.innerHeight;
     canvas.width = window.innerWidth;
 
   });
 
-
-
   function obstacles(){
 
-    
+    for (var i = 0; i < 5; i++) {
+      var randomx = Math.random()*window.innerWidth;
+      var randomy = Math.random()*(window.innerHeight*0.75-100);
+      var randomw = Math.random()*(window.innerWidth*0.2+50);
+      var randomh = Math.random()*(window.innerHeight*0.2+50);
+
+      ctx.fillStyle = 'red';
+      ctx.fillRect(randomx,randomy,randomw, randomh);
+
+    }
 
   }
+
+  obstacles();
 
   function projectile(xpos,ypos){
     var xv = (xpos-launchx);
@@ -33,23 +41,24 @@ $(function(){
 
     var loopTimer = setInterval(function(xpos ,ypos){
 
-      console.log(loopcount);
-
       ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
       ctx.beginPath();
       ctx.arc(launchx, launchy, 10, 0, Math.PI*(2));
-      ctx.fillStyle = 'white';
+      ctx.fillStyle = 'blue';
       ctx.closePath();
       ctx.fill();
-      //
+
       launchx += (xv/100);
       launchy += (yv/100);
       loopcount += 1;
+
+      if (
 
       if (loopcount > 500){
         clearInterval(loopTimer);
         launchx = (window.innerWidth/2);
         launchy = (window.innerHeight)
+        launch.length = 0;
 
       }
 
