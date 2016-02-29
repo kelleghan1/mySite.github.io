@@ -3,12 +3,12 @@ $(document).ready(function(){
   var body = document.querySelector('body');
   var canvas = document.querySelector('canvas');
   var ctx = canvas.getContext('2d');
+  var launchx = (window.innerWidth/2);
+  var launchy = (window.innerHeight);
+  var launch = true;
 
-  console.log(window.innerHeight);
-
-  canvas.height = window.innerHeight;
   canvas.width = window.innerWidth;
-
+  canvas.height = window.innerHeight;
 
 
   $(window).resize(function (){
@@ -17,38 +17,49 @@ $(document).ready(function(){
 
   });
 
-  function projectile(x,y){
-    console.log('hello');
-    console.log(x);
-    console.log(y);
-    console.log(window.innerWidth);
-    console.log(canvas.width);
+  function projectile(xpos,ypos){
+    var xv = (launchx/-xpos);
+    var yv = (launchy/ypos);
+    var loopcount = 0;
+    launch = false;
 
-    // for(i=0; i < 600; i++){
+    var loopTimer = setInterval(function(xpos ,ypos){
 
-    // ctx.clearRect(0,0,600,600);
-    ctx.beginPath();
-    ctx.arc(x, y, 20, 0, Math.PI*(2));
-    ctx.fillStyle = 'black';
-    ctx.closePath();
-    ctx.fill();
+      console.log(loopcount);
 
-    // }
+      ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+      ctx.beginPath();
+      ctx.arc(launchx, launchy, 10, 0, Math.PI*(2));
+      ctx.fillStyle = 'black';
+      ctx.closePath();
+      ctx.fill();
+
+      launchx += xv;
+      launchy -= yv;
+      loopcount += 1;
+
+      if (loopcount > 500){
+        clearInterval(loopTimer);
+        launchx = (window.innerWidth/2);
+        launchy = (window.innerHeight)
+        launch = true;
+        
+      }
+
+    }, 5);
 
   }
 
   $(canvas).on('click', function(e){
-    var x = e.pageX;
-    var y = e.pageY;
+    var xpos = e.pageX;
+    var ypos = e.pageY;
 
-    projectile(x,y);
+    if (launch = true){
 
+      projectile(xpos,ypos);
 
+    }
 
   })
-
-
-
-
 
 })
