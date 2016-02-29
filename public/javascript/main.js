@@ -52,7 +52,7 @@ $(function(){
       launchy += (yv/100);
       loopcount += 1;
 
-      if (
+    
 
       if (loopcount > 500){
         clearInterval(loopTimer);
