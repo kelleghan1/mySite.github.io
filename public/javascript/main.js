@@ -1,11 +1,11 @@
-$(document).ready(function(){
+$(function(){
 
   var body = document.querySelector('body');
   var canvas = document.querySelector('canvas');
   var ctx = canvas.getContext('2d');
   var launchx = (window.innerWidth/2);
   var launchy = (window.innerHeight);
-  var launch = true;
+  var launch = [];
 
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
@@ -17,11 +17,19 @@ $(document).ready(function(){
 
   });
 
+
+
+  function obstacles(){
+
+    
+
+  }
+
   function projectile(xpos,ypos){
-    var xv = (launchx/-xpos);
-    var yv = (launchy/ypos);
+    var xv = (xpos-launchx);
+    var yv = (ypos-launchy);
     var loopcount = 0;
-    launch = false;
+    launch.push(1);
 
     var loopTimer = setInterval(function(xpos ,ypos){
 
@@ -30,20 +38,19 @@ $(document).ready(function(){
       ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
       ctx.beginPath();
       ctx.arc(launchx, launchy, 10, 0, Math.PI*(2));
-      ctx.fillStyle = 'black';
+      ctx.fillStyle = 'white';
       ctx.closePath();
       ctx.fill();
-
-      launchx += xv;
-      launchy -= yv;
+      //
+      launchx += (xv/100);
+      launchy += (yv/100);
       loopcount += 1;
 
       if (loopcount > 500){
         clearInterval(loopTimer);
         launchx = (window.innerWidth/2);
         launchy = (window.innerHeight)
-        launch = true;
-        
+
       }
 
     }, 5);
@@ -53,12 +60,11 @@ $(document).ready(function(){
   $(canvas).on('click', function(e){
     var xpos = e.pageX;
     var ypos = e.pageY;
+    launchx = (window.innerWidth/2);
+    launchy = (window.innerHeight)
+    console.log(launch.length);
 
-    if (launch = true){
-
-      projectile(xpos,ypos);
-
-    }
+    projectile(xpos,ypos);
 
   })
 
