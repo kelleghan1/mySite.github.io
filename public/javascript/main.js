@@ -7,6 +7,11 @@ $(function(){
   var launchy = (window.innerHeight);
   var launch = [];
 
+  var ball = {
+    
+
+  }
+
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
@@ -24,7 +29,7 @@ $(function(){
       var randomw = Math.random()*(window.innerWidth*0.2+50);
       var randomh = Math.random()*(window.innerHeight*0.2+50);
 
-      ctx.fillStyle = 'red';
+      ctx.fillStyle = 'rgba(0,255,255,0.5)';
       ctx.fillRect(randomx,randomy,randomw, randomh);
 
     }
@@ -44,7 +49,7 @@ $(function(){
       ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
       ctx.beginPath();
       ctx.arc(launchx, launchy, 10, 0, Math.PI*(2));
-      ctx.fillStyle = 'blue';
+      ctx.fillStyle = 'white';
       ctx.closePath();
       ctx.fill();
 
@@ -52,12 +57,10 @@ $(function(){
       launchy += (yv/100);
       loopcount += 1;
 
-    
-
       if (loopcount > 500){
         clearInterval(loopTimer);
         launchx = (window.innerWidth/2);
-        launchy = (window.innerHeight)
+        launchy = (window.innerHeight);
         launch.length = 0;
 
       }
@@ -69,11 +72,14 @@ $(function(){
   $(canvas).on('click', function(e){
     var xpos = e.pageX;
     var ypos = e.pageY;
-    launchx = (window.innerWidth/2);
-    launchy = (window.innerHeight)
+
     console.log(launch.length);
 
-    projectile(xpos,ypos);
+    if (launch.length == 0){
+      launchx = (window.innerWidth/2);
+      launchy = (window.innerHeight)
+      projectile(xpos,ypos);
+    }
 
   })
 
