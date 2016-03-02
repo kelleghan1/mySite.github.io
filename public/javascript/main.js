@@ -5,9 +5,13 @@ $(function(){
   var ctx = canvas.getContext('2d');
   var launch = [];
   var boxes = [ bx1 = [],  bx2 = [],  bx3 = [],  bx4 = [],  bx5 = []];
+  var tries = 15;
+
+
 
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
+  $('p').html('Tries ' + tries);
 
   $(window).resize(function (){
     canvas.height = window.innerHeight;
@@ -56,7 +60,7 @@ $(function(){
       if ( Math.floor(launchy) >= Math.floor(boxes[0][1]) && Math.floor(launchy) <= Math.floor(boxes[0][1] + boxes[0][3]) ) {
         if ( Math.floor(launchx) >= Math.floor(boxes[0][0]) && Math.floor(launchx) <= Math.floor(boxes[0][0] + boxes[0][2]) ) {
           yv = -yv;
-        } 
+        }
       }
 
       if ( Math.floor(launchy) >= Math.floor(boxes[1][1]) && Math.floor(launchy) <= Math.floor(boxes[1][1] + boxes[1][3]) ) {
@@ -149,6 +153,8 @@ $(function(){
       launchx = (window.innerWidth/2);
       launchy = (window.innerHeight-1)
       projectile(xpos, ypos);
+      tries -= 1;
+      $('p').html('Tries ' + tries);
 
     }
 
