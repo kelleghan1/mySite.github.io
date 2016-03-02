@@ -151,8 +151,8 @@ $(function(){
       ctx.closePath();
       ctx.fill();
 
-      launchx += (xv/500);
-      launchy += (yv/500);
+      launchx += (xv/400);
+      launchy += (yv/400);
       loopcount += 1;
 
       if (loopcount > 1000){
@@ -163,7 +163,7 @@ $(function(){
 
       }
 
-    }, 1/200);
+    }, 1/800);
 
   }
 
