@@ -59,10 +59,10 @@ canvas {
   float: none;
   margin: 0; }
 
-  p {
-    margin: 0;
-    padding: 0;
-    color: white;
-    font-size: 25px;
-    font-family: 'Futura';
-  }
+p {
+  font-family: 'Futura';
+  color: white;
+  font-size: 25px;
+  position: fixed;
+  bottom: 15px;
+  left: 15px; }
