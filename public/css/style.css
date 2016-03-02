@@ -58,11 +58,11 @@ canvas {
   margin: 0; }
 
 p {
+  background-color: rgba(0, 0, 0, 0.6);
   padding: 5px;
   font-family: 'Futura';
-  background-color: black;
   color: white;
-  font-size: 25px;
+  font-size: 20px;
   position: fixed;
   bottom: 15px;
   left: 15px; }
