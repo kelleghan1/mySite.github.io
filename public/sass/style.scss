@@ -49,27 +49,25 @@ table {
 }
 
 body {
-  // background: #000;
-  // background-image: url("../background.jpg");
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
   background-size: cover;
-
 }
+
 canvas {
   display: block;
   float: none;
   margin: 0;
-
 }
 
 p {
+  padding: 5px;
   font-family: 'Futura';
+  background-color: black;
   color: white;
   font-size: 25px;
   position: fixed;
   bottom: 15px;
   left: 15px;
-
 }

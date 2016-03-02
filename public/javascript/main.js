@@ -20,8 +20,6 @@ $(function(){
     }
   });
 
-
-
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
@@ -43,7 +41,7 @@ $(function(){
 
       boxes.push([randomx, randomy, randomw, randomh]);
 
-      ctx.fillStyle = 'rgba(0,255,255,0.5)';
+      ctx.fillStyle = 'rgba(0,255,255,0.75)';
       ctx.fillRect(boxes[i][0], boxes[i][1], boxes[i][2], boxes[i][3]);
 
     }
@@ -62,7 +60,7 @@ $(function(){
 
         ctx.beginPath();
         ctx.arc(targs[i][0], targs[i][1], 10, 0, Math.PI*(2));
-        ctx.fillStyle = 'rgba(255,100,100,0.5)';
+        ctx.fillStyle = 'rgba(255,100,100,0.75)';
         ctx.closePath();
         ctx.fill();
 
@@ -170,7 +168,6 @@ $(function(){
       //
       //   }
       // }
-
 
       if ( (launchx) >= (targs[0][0]- 10) && (launchx) <= (targs[0][0] + 10) ) {
         if ( (launchy) >= (targs[0][1]- 10) && (launchy) <= (targs[0][1] + 10) ) {
