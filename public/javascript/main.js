@@ -27,6 +27,15 @@ $(function(){
   $(window).resize(function (){
     canvas.height = window.innerHeight;
     canvas.width = window.innerWidth;
+    ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+    shots = 5;
+    score = 0;
+    launch.length = 0;
+    boxes.length = 0;
+    targs.length = 0;
+    targetsGenerate()
+    targetDraw();
+    obstacles();
   });
 
   $('p').html('Shots: ' + shots +' / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
@@ -36,8 +45,8 @@ $(function(){
     for (var i = 0; i < 6; i++) {
       var randomx = Math.floor(Math.random()*window.innerWidth);
       var randomy = Math.floor(Math.random()*(window.innerHeight*0.75-100));
-      var randomw = Math.floor(Math.random()*(window.innerWidth*0.2+50));
-      var randomh = Math.floor(Math.random()*(window.innerHeight*0.2+50));
+      var randomw = Math.floor(Math.random()*(window.innerWidth*0.3+50));
+      var randomh = Math.floor(Math.random()*(window.innerHeight*0.3+50));
 
       boxes.push([randomx, randomy, randomw, randomh]);
       ctx.fillStyle = 'rgba(0,255,255,0.75)';
@@ -46,7 +55,7 @@ $(function(){
   }
 
   function targetsGenerate(){
-    for (var i = 0; i < 20; i++) {
+    for (var i = 0; i < 30; i++) {
 
       var randomtx = Math.floor(Math.random()*window.innerWidth);
       var randomty = Math.floor(Math.random()*(window.innerHeight*0.75-100));
@@ -203,8 +212,8 @@ $(function(){
       ctx.stroke();
       ctx.fill();
 
-      launchx += (xv/(sconstant*1.5));
-      launchy += (yv/(sconstant*1.5));
+      launchx += (xv/(sconstant*1.25));
+      launchy += (yv/(sconstant*1.25));
       loopcount += 1;
 
       if (loopcount > 2500){
@@ -259,10 +268,12 @@ $(function(){
         targetDraw();
         obstacles();
 
-      }else if (playAgain().toUpperCase() == 'NO'){
+      }else{
+        console.log('pop');
         $('p').html('THANKS FOR PLAYING');
-      }
 
+      }
     }
   }
+
 })
