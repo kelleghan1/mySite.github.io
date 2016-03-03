@@ -6,10 +6,9 @@ $(function(){
   var launch = [];
   var boxes = [];
   var targs = [];
-  var shots = 3;
+  var shots = 5;
   var score = 0;
   var finalScore = 0;
-  var initials;
   var imageSearch = ['greyscale geometric'];
 
   $.ajax({
@@ -21,21 +20,14 @@ $(function(){
     }
   });
 
-  function initials(){
-    return window.prompt('Enter your initials');
-  }
-
-  localStorage.setItem('initials', initials());
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
-
-  $('p').html('Shots: ' + shots +' / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
-
   $(window).resize(function (){
     canvas.height = window.innerHeight;
     canvas.width = window.innerWidth;
-
   });
+
+  $('p').html('Shots: ' + shots +' / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
 
   function obstacles(){
 
@@ -48,7 +40,6 @@ $(function(){
       boxes.push([randomx, randomy, randomw, randomh]);
       ctx.fillStyle = 'rgba(0,255,255,0.75)';
       ctx.fillRect(boxes[i][0], boxes[i][1], boxes[i][2], boxes[i][3]);
-
     }
   }
 
@@ -77,15 +68,13 @@ $(function(){
   targetDraw();
   obstacles();
 
-  if (shots == 0) {
-    localStorage.setItem(initials, finalScore);
-  }
-
   function projectile(xpos,ypos){
     var xv = (xpos-launchx);
     var yv = (ypos-launchy);
     var loopcount = 0;
     var speedcount = (1);
+    var sconstant = ( Math.sqrt((xv*xv)+(yv*yv)) / Math.sqrt((launchy*launchy)+(launchx*launchx)) )
+
     launch.push(1);
 
     var loopTimer = setInterval(function(xpos, ypos) {
@@ -170,10 +159,9 @@ $(function(){
         (launchy >= (targs[i][1]- 10) && launchy <= (targs[i][1] + 10))
 
         if (collision) {
-          console.log(collision, i);
           targs.splice(i,1);
           score += 1;
-          $('p').html('Shots: ' + shots +'  / Score: ' + score + ' / High score: ' + localStorage.getItem('finalScore'));
+          $('p').html('Shots: ' + shots +'  / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
         }
       }
 
@@ -188,16 +176,17 @@ $(function(){
       ctx.stroke();
       ctx.fill();
 
-      launchx += (xv/450);
-      launchy += (yv/450);
+      launchx += (xv/500);
+      launchy += (yv/500);
       loopcount += 1;
 
-      if (loopcount > 1500){
+      if (loopcount > 2000){
         clearInterval(loopTimer);
         launchx = (window.innerWidth/2);
         launchy = (window.innerHeight);
         launch.length = 0;
-        
+        scoreLog();
+        $('p').html('Shots: ' + shots +'  / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
       }
     }, 1/1000);
   }
@@ -211,8 +200,33 @@ $(function(){
       launchy = (window.innerHeight-1)
       projectile(xpos, ypos);
       shots -= 1;
-      console.log(finalScore);
+
       $('p').html('Shots: ' + shots +'  / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
     }
   })
+
+  function scoreLog() {
+
+    if (shots == 0) {
+
+      if (score > finalScore) {
+        finalScore = score;
+        localStorage.setItem('finalScore', finalScore);
+      }
+
+      $('p').html('Shots: ' + shots +'  / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
+
+      function playAgain(){
+        console.log('ask');
+        return window.prompt('Play Again?');
+      };
+
+      if (playAgain().toUpperCase() == 'YES') {
+
+        shots = 5;
+        score = 0;
+      }
+
+    }
+  }
 })
