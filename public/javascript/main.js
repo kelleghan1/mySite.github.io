@@ -6,6 +6,8 @@ $(function(){
   var launch = [];
   var boxes = [];
   var targs = [];
+  var launchx = (window.innerWidth/2);
+  var launchy = (window.innerHeight-1)
   var shots = 5;
   var score = 0;
   var finalScore = 0;
@@ -31,7 +33,7 @@ $(function(){
 
   function obstacles(){
 
-    for (var i = 0; i < 5; i++) {
+    for (var i = 0; i < 6; i++) {
       var randomx = Math.floor(Math.random()*window.innerWidth);
       var randomy = Math.floor(Math.random()*(window.innerHeight*0.75-100));
       var randomw = Math.floor(Math.random()*(window.innerWidth*0.2+50));
@@ -74,7 +76,7 @@ $(function(){
     var xv = (xpos-launchx);
     var yv = (ypos-launchy);
     var loopcount = 0;
-    var sconstant = ( Math.sqrt((xv*xv)+(yv*yv)))
+    var sconstant = ( Math.sqrt((xv*xv)+(yv*yv)) )
 
     launch.push(1);
 
@@ -92,12 +94,13 @@ $(function(){
 
       // for (var i = 0; i < boxes.length; i++) {
       //
-      //   if ( Math.floor(launchy) == Math.floor(boxes[i][1]) || Math.floor(launchy) == Math.floor(boxes[i][1] + Math.floor([i][3])) ) {
+      //   if ( Math.floor(launchy) == boxes[i][1] || Math.floor(launchy) == boxes[i][1] + boxes[i][3] )  {
+      //     console.log(boxes[i][1]);
       //
-      //     if ( Math.floor(launchx) > Math.floor(boxes[i][0]) &&  Math.floor(launchx) < Math.floor(boxes[i][0] + boxes[i][2]) )  {
+      //     if ( Math.floor(launchx) >= boxes[i][0] && Math.floor(launchx) <= (boxes[i][0] + boxes[i][2]) )  {
       //       yv = -yv;
+      //       console.log('hit');
       //     }
-      //
       //   }
       // }
 
@@ -127,6 +130,12 @@ $(function(){
 
       if ( Math.floor(launchy) == Math.floor(boxes[4][1]) || Math.floor(launchy) == Math.floor(boxes[4][1] + boxes[4][3]) ) {
         if ( Math.floor(launchx) >= Math.floor(boxes[4][0]) && Math.floor(launchx) <= Math.floor(boxes[4][0] + boxes[4][2]) ) {
+          yv = -yv;
+        }
+      }
+
+      if ( Math.floor(launchy) == Math.floor(boxes[5][1]) || Math.floor(launchy) == Math.floor(boxes[5][1] + boxes[5][3]) ) {
+        if ( Math.floor(launchx) >= Math.floor(boxes[5][0]) && Math.floor(launchx) <= Math.floor(boxes[5][0] + boxes[5][2]) ) {
           yv = -yv;
         }
       }
@@ -163,6 +172,12 @@ $(function(){
         }
       }
 
+      if ( Math.floor(launchx) == Math.floor(boxes[5][0]) || Math.floor(launchx) == Math.floor(boxes[5][0] + boxes[5][2]) ) {
+        if ( Math.floor(launchy) >= Math.floor(boxes[5][1]) && Math.floor(launchy) <= Math.floor(boxes[5][1] + boxes[5][3]) ) {
+          xv = -xv;
+        }
+      }
+
       // target collisions
 
       for (var i = 0; i < targs.length; i++) {
@@ -188,11 +203,11 @@ $(function(){
       ctx.stroke();
       ctx.fill();
 
-      launchx += (xv/sconstant);
-      launchy += (yv/sconstant);
+      launchx += (xv/(sconstant*1.5));
+      launchy += (yv/(sconstant*1.5));
       loopcount += 1;
 
-      if (loopcount > 2000){
+      if (loopcount > 2500){
         clearInterval(loopTimer);
         launchx = (window.innerWidth/2);
         launchy = (window.innerHeight);
@@ -200,7 +215,7 @@ $(function(){
         scoreLog();
         $('p').html('Shots: ' + shots +'  / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
       }
-    }, 1/1000);
+    }, 1/10000);
   }
 
   $(canvas).on('click', function(e){
@@ -244,8 +259,7 @@ $(function(){
         targetDraw();
         obstacles();
 
-
-      }else{
+      }else if (playAgain().toUpperCase() == 'NO'){
         $('p').html('THANKS FOR PLAYING');
       }
 
