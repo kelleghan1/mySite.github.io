@@ -1,13 +1,13 @@
 $(function(){
-
   var body = document.querySelector('body');
   var canvas = document.querySelector('canvas');
   var ctx = canvas.getContext('2d');
   var launch = [];
   var boxes = [];
   var targs = [];
-  var shots = 15;
+  var shots = 3;
   var score = 0;
+  var finalScore = 0;
   var imageSearch = ['greyscale geometric'];
 
   $.ajax({
@@ -16,7 +16,6 @@ $(function(){
     dataType: 'json', // added data type
     success: function(res) {
       $('body').css('background-image', 'url("' + res.images[0].imageurl + '")');
-      console.log(res.images[0].imageurl );
     }
   });
 
@@ -25,11 +24,10 @@ $(function(){
   }
 
   localStorage.setItem('initials', initials());
-
   canvas.width = window.innerWidth;
   canvas.height = window.innerHeight;
 
-  $('p').html('Shots: ' + shots +' / Score: ' + score + ' / High Score: ' + localStorage.getItem('score'));
+  $('p').html('Shots: ' + shots +' / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
 
   $(window).resize(function (){
     canvas.height = window.innerHeight;
@@ -46,38 +44,36 @@ $(function(){
       var randomh = Math.floor(Math.random()*(window.innerHeight*0.2+50));
 
       boxes.push([randomx, randomy, randomw, randomh]);
-
       ctx.fillStyle = 'rgba(0,255,255,0.75)';
       ctx.fillRect(boxes[i][0], boxes[i][1], boxes[i][2], boxes[i][3]);
 
     }
   }
 
-  function targets(){
-
+  function targetsGenerate(){
     for (var i = 0; i < 20; i++) {
       var randomtx = Math.floor(Math.random()*window.innerWidth);
       var randomty = Math.floor(Math.random()*(window.innerHeight*0.75-100));
-
       targs.push([randomtx, randomty]);
-
-      if (targs[i][0] != undefined) {
-
-        ctx.beginPath();
-        ctx.arc(targs[i][0], targs[i][1], 10, 0, Math.PI*(2));
-        ctx.fillStyle = 'rgba(255,100,100,0.75)';
-        ctx.strokeStyle = '#000000';
-        ctx.lineWidth = 3;
-        ctx.closePath();
-        ctx.stroke();
-        ctx.fill();
-
-      }
     }
   }
 
+  function targetDraw () {
+    for (var i = 0; i < targs.length; i++) {
+      ctx.beginPath();
+      ctx.arc( targs[i][0], targs[i][1], 10, 0, Math.PI*(2) );
+      ctx.fillStyle = 'rgba(255,100,100,0.75)';
+      ctx.strokeStyle = '#000000';
+      ctx.lineWidth = 3;
+      ctx.closePath();
+      ctx.stroke();
+      ctx.fill();
+    }
+  }
+
+  targetsGenerate();
+  targetDraw();
   obstacles();
-  targets();
 
   function projectile(xpos,ypos){
     var xv = (xpos-launchx);
@@ -86,7 +82,7 @@ $(function(){
     var speedcount = (1);
     launch.push(1);
 
-    var loopTimer = setInterval(function(xpos, ypos){
+    var loopTimer = setInterval(function(xpos, ypos) {
 
       if( launchx <= 0 || launchx >= canvas.width) {
         xv = -xv;
@@ -162,186 +158,23 @@ $(function(){
 
       // target collisions
 
-      for (var i = 0; i < 20; i++) {
-
-        console.log(targs.length);
+      for (var i = 0; i < targs.length; i++) {
 
         var collision = (launchx >= (targs[i][0]- 10) && launchx <= (targs[i][0] + 10)) &&
         (launchy >= (targs[i][1]- 10) && launchy <= (targs[i][1] + 10))
 
         if (collision) {
-          console.log("Boom " + i);
+          console.log(collision, i);
           targs.splice(i,1);
           score += 1;
-          $('p').html('Shots: ' + shots +'  Score: ' + score);
+          $('p').html('Shots: ' + shots +'  / Score: ' + score + ' / High score: ' + localStorage.getItem('finalScore'));
         }
-      }
 
-      //
-      // if ( (launchx) >= (targs[0][0]- 10) && (launchx) <= (targs[0][0] + 10) ) {
-      //   if ( (launchy) >= (targs[0][1]- 10) && (launchy) <= (targs[0][1] + 10) ) {
-      //     targs.splice(0,1);
-      //     score += 1;
-      //     $('p').html('Shots: ' + shots +' / Score: ' + score + ' / High score: ' + localStorage.getItem('score'));
-      //   }
-      // }
-      //
-      // if ( (launchx) >= (targs[1][0]- 10) && (launchx) <= (targs[1][0] + 10) ) {
-      //   if ( (launchy) >= (targs[1][1]- 10) && (launchy) <= (targs[1][1] + 10) ) {
-      //     targs.splice(1,1);
-      //     score += 1;
-      //     $('p').html('Shots: ' + shots +' / Score: ' + score + ' / High score: ' + localStorage.getItem('score'));
-      //   }
-      // }
-      //
-      // if ( (launchx) >= (targs[2][0]- 10) && (launchx) <= (targs[2][0] + 10) ) {
-      //   if ( (launchy) >= (targs[2][1]- 10) && (launchy) <= (targs[2][1] + 10) ) {
-      //     targs.splice(2,1);
-      //     score += 1;
-      //     $('p').html('Shots: ' + shots +' /  Score: ' + score + ' / High score: ' + localStorage.getItem('score'));
-      //   }
-      // }
-      //
-      // if ( (launchx) >= (targs[3][0]- 10) && (launchx) <= (targs[3][0] + 10) ) {
-      //   if ( (launchy) >= (targs[3][1]- 10) && (launchy) <= (targs[3][1] + 10) ) {
-      //     targs.splice(3,1);
-      //     score += 1;
-      //     $('p').html('Shots: ' + shots +' / Score: ' + score + ' / High score: ' + localStorage.getItem('score'));
-      //   }
-      // }
-      //
-      // if ( (launchx) >= (targs[4][0]- 10) && (launchx) <= (targs[4][0] + 10) ) {
-      //   if ( (launchy) >= (targs[4][1]- 10) && (launchy) <= (targs[4][1] + 10) ) {
-      //     targs.splice(4,1);
-      //     score += 1;
-      //     $('p').html('Shots: ' + shots +' / Score: ' + score + ' / High score: ' + localStorage.getItem('score'));
-      //   }
-      // }
-      //
-      // if ( (launchx) >= (targs[5][0]- 10) && (launchx) <= (targs[5][0] + 10) ) {
-      //   if ( (launchy) >= (targs[5][1]- 10) && (launchy) <= (targs[5][1] + 10) ) {
-      //     targs.splice(5,1);
-      //     score += 1;
-      //     $('p').html('Shots: ' + shots +' / Score: ' + score + ' / High score: ' + localStorage.getItem('score'));
-      //   }
-      // }
-      //
-      // if ( (launchx) >= (targs[6][0]- 10) && (launchx) <= (targs[6][0] + 10) ) {
-      //   if ( (launchy) >= (targs[6][1]- 10) && (launchy) <= (targs[6][1] + 10) ) {
-      //     targs.splice(6,1);
-      //     score += 1;
-      //     $('p').html('Shots: ' + shots +' / Score: ' + score + ' / High score: ' + localStorage.getItem('score'));
-      //   }
-      // }
-      //
-      // if ( (launchx) >= (targs[7][0]- 10) && (launchx) <= (targs[7][0] + 10) ) {
-      //   if ( (launchy) >= (targs[7][1]- 10) && (launchy) <= (targs[7][1] + 10) ) {
-      //     ctx.clearRect(targs[7][0]-10, targs[7][1]-10,20,20);
-      //     targs.splice(7,1);
-      //     score += 1;
-      //     $('p').html('Shots: ' + shots +' / Score: ' + score + ' / High score: ' + localStorage.getItem('score'));
-      //   }
-      // }
-      //
-      // if ( (launchx) >= (targs[8][0]- 10) && (launchx) <= (targs[8][0] + 10) ) {
-      //   if ( (launchy) >= (targs[8][1]- 10) && (launchy) <= (targs[8][1] + 10) ) {
-      //     targs.splice(8,1);
-      //     score += 1;
-      //     $('p').html('Shots: ' + shots +' / Score: ' + score + ' / High score: ' + localStorage.getItem('score'));
-      //   }
-      // }
-      //
-      // if ( (launchx) >= (targs[9][0]- 10) && (launchx) <= (targs[9][0] + 10) ) {
-      //   if ( (launchy) >= (targs[9][1]- 10) && (launchy) <= (targs[9][1] + 10) ) {
-      //     targs.splice(9,1);
-      //     score += 1;
-      //     $('p').html('Shots: ' + shots +' / Score: ' + score + ' / High score: ' + localStorage.getItem('score'));
-      //   }
-      // }
-      //
-      // if ( (launchx) >= (targs[10][0]- 10) && (launchx) <= (targs[10][0] + 10) ) {
-      //   if ( (launchy) >= (targs[10][1]- 10) && (launchy) <= (targs[10][1] + 10) ) {
-      //     targs.splice(10,1);
-      //     score += 1;
-      //     $('p').html('Shots: ' + shots +' / Score: ' + score + ' / High score: ' + localStorage.getItem('score'));
-      //   }
-      // }
-      //
-      // if ( (launchx) >= (targs[11][0]- 10) && (launchx) <= (targs[11][0] + 10) ) {
-      //   if ( (launchy) >= (targs[11][1]- 10) && (launchy) <= (targs[11][1] + 10) ) {
-      //     targs.splice(11,1);
-      //     score += 1;
-      //     $('p').html('Shots: ' + shots +' / Score: ' + score + ' / High score: ' + localStorage.getItem('score'));
-      //   }
-      // }
-      //
-      // if ( (launchx) >= (targs[12][0]- 10) && (launchx) <= (targs[12][0] + 10) ) {
-      //   if ( (launchy) >= (targs[12][1]- 10) && (launchy) <= (targs[12][1] + 10) ) {
-      //     targs.splice(12,1);
-      //     score += 1;
-      //     $('p').html('Shots: ' + shots +' / Score: ' + score + ' / High score: ' + localStorage.getItem('score'));
-      //   }
-      // }
-      //
-      // if ( (launchx) >= (targs[13][0]- 10) && (launchx) <= (targs[13][0] + 10) ) {
-      //   if ( (launchy) >= (targs[13][1]- 10) && (launchy) <= (targs[13][1] + 10) ) {
-      //     targs.splice(13,1);
-      //     score += 1;
-      //     $('p').html('Shots: ' + shots +' / Score: ' + score + ' / High score: ' + localStorage.getItem('score'));
-      //   }
-      // }
-      //
-      // if ( (launchx) >= (targs[14][0]- 10) && (launchx) <= (targs[14][0] + 10) ) {
-      //   if ( (launchy) >= (targs[14][1]- 10) && (launchy) <= (targs[14][1] + 10) ) {
-      //     targs.splice(14,1);
-      //     score += 1;
-      //     $('p').html('Shots: ' + shots +' / Score: ' + score + ' / High score: ' + localStorage.getItem('score'));
-      //   }
-      // }
-      //
-      // if ( (launchx) >= (targs[15][0]- 10) && (launchx) <= (targs[15][0] + 10) ) {
-      //   if ( (launchy) >= (targs[15][1]- 10) && (launchy) <= (targs[15][1] + 10) ) {
-      //     targs.splice(15,1);
-      //     score += 1;
-      //     $('p').html('Shots: ' + shots +' / Score: ' + score + ' / High score: ' + localStorage.getItem('score'));
-      //   }
-      // }
-      //
-      // if ( (launchx) >= (targs[16][0]- 10) && (launchx) <= (targs[16][0] + 10) ) {
-      //   if ( (launchy) >= (targs[16][1]- 10) && (launchy) <= (targs[16][1] + 10) ) {
-      //     targs.splice(16,1);
-      //     score += 1;
-      //     $('p').html('Shots: ' + shots +' / Score: ' + score + ' / High score: ' + localStorage.getItem('score'));
-      //   }
-      // }
-      //
-      // if ( (launchx) >= (targs[17][0]- 10) && (launchx) <= (targs[17][0] + 10) ) {
-      //   if ( (launchy) >= (targs[17][1]- 10) && (launchy) <= (targs[17][1] + 10) ) {
-      //     targs.splice(17,1);
-      //     score += 1;
-      //     $('p').html('Shots: ' + shots +' / Score: ' + score + ' / High score: ' + localStorage.getItem('score'));
-      //   }
-      // }
-      //
-      // if ( (launchx) >= (targs[18][0]- 10) && (launchx) <= (targs[18][0] + 10) ) {
-      //   if ( (launchy) >= (targs[18][1]- 10) && (launchy) <= (targs[18][1] + 10) ) {
-      //     targs.splice(18,1);
-      //     score += 1;
-      //     $('p').html('Shots: ' + shots +' /  Score: ' + score + ' / High score: ' + localStorage.getItem('score'));
-      //   }
-      // }
-      //
-      // if ( (launchx) >= (targs[19][0]- 10) && (launchx) <= (targs[19][0] + 10) ) {
-      //   if ( (launchy) >= (targs[19][1]- 10) && (launchy) <= (targs[19][1] + 10) ) {
-      //     targs.splice(19,1);
-      //     score += 1;
-      //     $('p').html('Shots: ' + shots +' / Score: ' + score + ' / High score: ' + localStorage.getItem('score'));
-      //   }
-      // }
+      }
 
       ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
       obstacles();
-      targets();
+      targetDraw();
       ctx.beginPath();
       ctx.arc(launchx, launchy, 5, 0, Math.PI*(2));
       ctx.fillStyle = 'white';
@@ -350,8 +183,8 @@ $(function(){
       ctx.stroke();
       ctx.fill();
 
-      launchx += (xv/500);
-      launchy += (yv/500);
+      launchx += (xv/450);
+      launchy += (yv/450);
       loopcount += 1;
 
       if (loopcount > 1500){
@@ -360,8 +193,6 @@ $(function(){
         launchy = (window.innerHeight);
         launch.length = 0;
         localStorage.setItem('score1', score);
-        console.log(localStorage.getItem('score'));
-
       }
     }, 1/1000);
   }
@@ -375,9 +206,8 @@ $(function(){
       launchy = (window.innerHeight-1)
       projectile(xpos, ypos);
       shots -= 1;
-      console.log(score);
-      $('p').html('Shots: ' + shots +'  / Score: ' + score + ' / High score: ' + localStorage.getItem('score'));    }
 
-    })
-
+      $('p').html('Shots: ' + shots +'  / Score: ' + score + ' / High score: ' + localStorage.getItem('finalScore'));
+    }
   })
+})
