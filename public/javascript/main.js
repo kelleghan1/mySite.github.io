@@ -1,4 +1,5 @@
 $(function(){
+
   var body = document.querySelector('body');
   var canvas = document.querySelector('canvas');
   var ctx = canvas.getContext('2d');
@@ -8,6 +9,7 @@ $(function(){
   var shots = 3;
   var score = 0;
   var finalScore = 0;
+  var initials;
   var imageSearch = ['greyscale geometric'];
 
   $.ajax({
@@ -74,6 +76,10 @@ $(function(){
   targetsGenerate();
   targetDraw();
   obstacles();
+
+  if (shots == 0) {
+    localStorage.setItem(initials, finalScore);
+  }
 
   function projectile(xpos,ypos){
     var xv = (xpos-launchx);
@@ -169,7 +175,6 @@ $(function(){
           score += 1;
           $('p').html('Shots: ' + shots +'  / Score: ' + score + ' / High score: ' + localStorage.getItem('finalScore'));
         }
-
       }
 
       ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
@@ -192,7 +197,7 @@ $(function(){
         launchx = (window.innerWidth/2);
         launchy = (window.innerHeight);
         launch.length = 0;
-        localStorage.setItem('score1', score);
+        
       }
     }, 1/1000);
   }
@@ -206,8 +211,8 @@ $(function(){
       launchy = (window.innerHeight-1)
       projectile(xpos, ypos);
       shots -= 1;
-
-      $('p').html('Shots: ' + shots +'  / Score: ' + score + ' / High score: ' + localStorage.getItem('finalScore'));
+      console.log(finalScore);
+      $('p').html('Shots: ' + shots +'  / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
     }
   })
 })
