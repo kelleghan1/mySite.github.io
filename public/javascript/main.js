@@ -216,16 +216,24 @@ $(function(){
 
       $('p').html('Shots: ' + shots +'  / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
 
-      function playAgain(){
-        console.log('ask');
-        return window.prompt('Play Again?');
-      };
-
-      if (playAgain().toUpperCase() == 'YES') {
-
-        shots = 5;
-        score = 0;
-      }
+      // function playAgain(){
+      //   console.log('ask');
+      //   return window.prompt('Play Again?');
+      // };
+      //
+      // if (playAgain().toUpperCase() == 'YES') {
+      //   ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+      //   shots = 5;
+      //   score = 0;
+      //   launch.length = 0;
+      //   boxes.length = 0;
+      //   targs.length = 0;
+      //   targetsGenerate()
+      //   targetDraw();
+      //   obstacles();
+      //
+      //
+      // }
 
     }
   }
