@@ -11,7 +11,7 @@ $(function(){
   var shots = 5;
   var score = 0;
   var finalScore = 0;
-  var imageSearch = ['greyscale mountain'];
+  var imageSearch = ['greyscale mountains'];
 
   $.ajax({
     url: 'http://api.pixplorer.co.uk/image?word=' +  imageSearch[Math.floor(Math.random()*imageSearch.length)] + '&amount=1&size=l',
@@ -38,7 +38,7 @@ $(function(){
     obstacles();
   });
 
-  $('p').html('Shots: ' + shots +' / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
+  $('.scoreboard > p').html('Shots: ' + shots +' / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
 
   function obstacles(){
 
@@ -55,7 +55,7 @@ $(function(){
   }
 
   function targetsGenerate(){
-    for (var i = 0; i < 30; i++) {
+    for (var i = 0; i < 50; i++) {
 
       var randomtx = Math.floor(Math.random()*window.innerWidth);
       var randomty = Math.floor(Math.random()*(window.innerHeight*0.75-100));
@@ -191,13 +191,13 @@ $(function(){
 
       for (var i = 0; i < targs.length; i++) {
 
-        var collision = (launchx >= (targs[i][0]- 10) && launchx <= (targs[i][0] + 10)) &&
-        (launchy >= (targs[i][1]- 10) && launchy <= (targs[i][1] + 10))
+        var collision = (launchx >= (targs[i][0]- 15) && launchx <= (targs[i][0] + 15)) &&
+        (launchy >= (targs[i][1]- 15) && launchy <= (targs[i][1] + 15))
 
         if (collision) {
           targs.splice(i,1);
           score += 1;
-          $('p').html('Shots: ' + shots +'  / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
+          $('scoreboard > p').html('Shots: ' + shots +'  / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
         }
       }
 
@@ -222,7 +222,7 @@ $(function(){
         launchy = (window.innerHeight);
         launch.length = 0;
         scoreLog();
-        $('p').html('Shots: ' + shots +'  / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
+        $('.scoreboard > p').html('Shots: ' + shots +'  / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
       }
     }, 1/10000);
   }
@@ -237,7 +237,7 @@ $(function(){
       projectile(xpos, ypos);
       shots -= 1;
 
-      $('p').html('Shots: ' + shots +'  / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
+      $('.scoreboard > p').html('Shots: ' + shots +'  / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
     }
   })
 
@@ -250,10 +250,9 @@ $(function(){
         localStorage.setItem('finalScore', finalScore);
       }
 
-      $('p').html('Shots: ' + shots +'  / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
+      $('.scoreboard > p').html('Shots: ' + shots +'  / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
 
       function playAgain(){
-        console.log('ask');
         return window.prompt('PLAY AGAIN? ENTER YES OR NO');
       };
 
@@ -269,9 +268,8 @@ $(function(){
         obstacles();
 
       }else{
-        console.log('pop');
-        $('p').html('THANKS FOR PLAYING');
-
+        $('.gameover > p').html('THANKS FOR PLAYING');
+        $('.gameover > p').removeClass('display');
       }
     }
   }
