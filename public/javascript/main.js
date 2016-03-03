@@ -9,7 +9,7 @@ $(function(){
   var shots = 5;
   var score = 0;
   var finalScore = 0;
-  var imageSearch = ['greyscale geometric'];
+  var imageSearch = ['greyscale mountain'];
 
   $.ajax({
     url: 'http://api.pixplorer.co.uk/image?word=' +  imageSearch[Math.floor(Math.random()*imageSearch.length)] + '&amount=1&size=l',
@@ -45,9 +45,11 @@ $(function(){
 
   function targetsGenerate(){
     for (var i = 0; i < 20; i++) {
+
       var randomtx = Math.floor(Math.random()*window.innerWidth);
       var randomty = Math.floor(Math.random()*(window.innerHeight*0.75-100));
       targs.push([randomtx, randomty]);
+
     }
   }
 
@@ -72,8 +74,7 @@ $(function(){
     var xv = (xpos-launchx);
     var yv = (ypos-launchy);
     var loopcount = 0;
-    var speedcount = (1);
-    var sconstant = ( Math.sqrt((xv*xv)+(yv*yv)) / Math.sqrt((launchy*launchy)+(launchx*launchx)) )
+    var sconstant = ( Math.sqrt((xv*xv)+(yv*yv)))
 
     launch.push(1);
 
@@ -88,6 +89,17 @@ $(function(){
       }
 
       // vertical collisions
+
+      // for (var i = 0; i < boxes.length; i++) {
+      //
+      //   if ( Math.floor(launchy) == Math.floor(boxes[i][1]) || Math.floor(launchy) == Math.floor(boxes[i][1] + Math.floor([i][3])) ) {
+      //
+      //     if ( Math.floor(launchx) > Math.floor(boxes[i][0]) &&  Math.floor(launchx) < Math.floor(boxes[i][0] + boxes[i][2]) )  {
+      //       yv = -yv;
+      //     }
+      //
+      //   }
+      // }
 
       if ( Math.floor(launchy) == Math.floor(boxes[0][1]) || Math.floor(launchy) == Math.floor(boxes[0][1] + boxes[0][3]) ) {
         if ( Math.floor(launchx) >= Math.floor(boxes[0][0]) && Math.floor(launchx) <= Math.floor(boxes[0][0] + boxes[0][2]) ) {
@@ -176,8 +188,8 @@ $(function(){
       ctx.stroke();
       ctx.fill();
 
-      launchx += (xv/500);
-      launchy += (yv/500);
+      launchx += (xv/sconstant);
+      launchy += (yv/sconstant);
       loopcount += 1;
 
       if (loopcount > 2000){
@@ -216,24 +228,26 @@ $(function(){
 
       $('p').html('Shots: ' + shots +'  / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
 
-      // function playAgain(){
-      //   console.log('ask');
-      //   return window.prompt('Play Again?');
-      // };
-      //
-      // if (playAgain().toUpperCase() == 'YES') {
-      //   ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
-      //   shots = 5;
-      //   score = 0;
-      //   launch.length = 0;
-      //   boxes.length = 0;
-      //   targs.length = 0;
-      //   targetsGenerate()
-      //   targetDraw();
-      //   obstacles();
-      //
-      //
-      // }
+      function playAgain(){
+        console.log('ask');
+        return window.prompt('PLAY AGAIN? ENTER YES OR NO');
+      };
+
+      if (playAgain().toUpperCase() == 'YES') {
+        ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+        shots = 5;
+        score = 0;
+        launch.length = 0;
+        boxes.length = 0;
+        targs.length = 0;
+        targetsGenerate()
+        targetDraw();
+        obstacles();
+
+
+      }else{
+        $('p').html('THANKS FOR PLAYING');
+      }
 
     }
   }
