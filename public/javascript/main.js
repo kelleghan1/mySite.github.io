@@ -197,7 +197,8 @@ $(function(){
         if (collision) {
           targs.splice(i,1);
           score += 1;
-          $('scoreboard > p').html('Shots: ' + shots +'  / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
+          console.log(score);
+          $('.scoreboard > p').html('Shots: ' + shots +'  / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
         }
       }
 
@@ -270,6 +271,7 @@ $(function(){
       }else{
         $('.gameover > p').html('THANKS FOR PLAYING');
         $('.gameover > p').removeClass('display');
+
       }
     }
   }
