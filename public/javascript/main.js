@@ -38,8 +38,7 @@ $(function(){
     obstacles();
   });
 
-  $('.scoreboard > p').html('Shots: ' + shots +' / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
-
+  postScore();  
   function obstacles(){
     var basex = (window.innerWidth/2);
     var basey = (window.innerHeight-1)
@@ -56,7 +55,7 @@ $(function(){
     }
 
     ctx.beginPath();
-    ctx.fillStyle = 'rgba(255,100,100,0.75)';
+    ctx.fillStyle = 'rgba(0,255,255,0.75)';
     ctx.moveTo(basex, basey -20);
     ctx.lineTo(basex + 20, basey);
     ctx.lineTo(basex - 20, basey);
@@ -206,84 +205,90 @@ $(function(){
         (launchy >= (targs[i][1]- 15) && launchy <= (targs[i][1] + 15))
 
         if (collision) {
-          targs.splice(i,1);
           score += 1;
-          $('scoreboard > p').html('Shots: ' + shots +'  / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
+          ctx.beginPath();
+          ctx.arc(targs[i][0], targs[i][1], 15, 0, Math.PI*(2));
+          ctx.strokeStyle = 'yellow';
+          ctx.closePath();
+          ctx.stroke();
+          targs.splice(i,1);
+          postScore();        }
         }
-      }
 
-      ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
-      obstacles();
-      targetDraw();
-      ctx.beginPath();
-      ctx.arc(launchx, launchy, 5, 0, Math.PI*(2));
-      ctx.fillStyle = 'white';
-      ctx.strokeStyle = 'black';
-      ctx.closePath();
-      ctx.stroke();
-      ctx.fill();
-
-      launchx += (xv/(sconstant*1.25));
-      launchy += (yv/(sconstant*1.25));
-      loopcount += 1;
-
-      if (loopcount > 2500){
-        clearInterval(loopTimer);
-        launchx = (window.innerWidth/2);
-        launchy = (window.innerHeight);
-        launch.length = 0;
-        scoreLog();
-        $('.scoreboard > p').html('Shots: ' + shots +'  / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
-      }
-    }, 1/10000);
-  }
-
-  $(canvas).on('click', function(e){
-    var xpos = e.pageX;
-    var ypos = e.pageY;
-
-    if (launch.length == 0 && shots != 0){
-      launchx = (window.innerWidth/2);
-      launchy = (window.innerHeight-1)
-      projectile(xpos, ypos);
-      shots -= 1;
-
-      $('.scoreboard > p').html('Shots: ' + shots +'  / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
-    }
-  })
-
-  function scoreLog() {
-
-    if (shots == 0) {
-
-      if (score > finalScore) {
-        finalScore = score;
-        localStorage.setItem('finalScore', finalScore);
-      }
-
-      $('.scoreboard > p').html('Shots: ' + shots +'  / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
-
-      function playAgain(){
-        return window.prompt('PLAY AGAIN? ENTER YES OR NO');
-      };
-
-      if (playAgain().toUpperCase() == 'YES') {
-        ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
-        shots = 5;
-        score = 0;
-        launch.length = 0;
-        boxes.length = 0;
-        targs.length = 0;
-        targetsGenerate()
-        targetDraw();
         obstacles();
+        targetDraw();
+        ctx.beginPath();
+        ctx.arc(launchx, launchy, 3, 0, Math.PI*(2));
+        ctx.fillStyle = 'black';
+        ctx.strokeStyle = 'white';
+        ctx.closePath();
+        ctx.stroke();
+        ctx.fill();
 
-      }else{
-        $('.gameover > p').html('THANKS FOR PLAYING');
-        $('.gameover > p').removeClass('display');
+        launchx += (xv/(sconstant*1.25));
+        launchy += (yv/(sconstant*1.25));
+        loopcount += 1;
+
+        if (loopcount > 2500){
+          clearInterval(loopTimer);
+          launchx = (window.innerWidth/2);
+          launchy = (window.innerHeight);
+          launch.length = 0;
+          scoreLog();
+          postScore();      }
+        }, 1/10000);
+        ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
 
       }
-    }
-  }
 
-})
+      $(canvas).on('click', function(e){
+        var xpos = e.pageX;
+        var ypos = e.pageY;
+
+        if (launch.length == 0 && shots != 0){
+          launchx = (window.innerWidth/2);
+          launchy = (window.innerHeight-1)
+          projectile(xpos, ypos);
+          shots -= 1;
+
+          postScore();    }
+        })
+
+        function scoreLog() {
+
+          if (shots == 0) {
+
+            if (score > finalScore) {
+              finalScore = score;
+              localStorage.setItem('finalScore', finalScore);
+            }
+
+            postScore();
+
+            function playAgain(){
+              return window.prompt('PLAY AGAIN? ENTER YES OR NO');
+            };
+
+            if (playAgain().toUpperCase() == 'YES') {
+              ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+              shots = 5;
+              score = 0;
+              launch.length = 0;
+              boxes.length = 0;
+              targs.length = 0;
+              targetsGenerate()
+              targetDraw();
+              obstacles();
+
+            }else{
+              $('.gameover > p').html('THANKS FOR PLAYING');
+              $('.gameover > p').removeClass('display');
+            }
+          }
+        }
+
+        function postScore() {
+          $('.scoreboard > p').html('Shots Remaining: ' + shots +'  / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
+        }
+
+      })
