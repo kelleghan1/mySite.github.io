@@ -41,6 +41,8 @@ $(function(){
   $('.scoreboard > p').html('Shots: ' + shots +' / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
 
   function obstacles(){
+    var basex = (window.innerWidth/2);
+    var basey = (window.innerHeight-1)
 
     for (var i = 0; i < 6; i++) {
       var randomx = Math.floor(Math.random()*window.innerWidth);
@@ -52,6 +54,15 @@ $(function(){
       ctx.fillStyle = 'rgba(0,255,255,0.75)';
       ctx.fillRect(boxes[i][0], boxes[i][1], boxes[i][2], boxes[i][3]);
     }
+
+    ctx.beginPath();
+    ctx.fillStyle = 'rgba(255,100,100,0.75)';
+    ctx.moveTo(basex, basey -20);
+    ctx.lineTo(basex + 20, basey);
+    ctx.lineTo(basex - 20, basey);
+    ctx.closePath();
+    ctx.fill();
+
   }
 
   function targetsGenerate(){
@@ -197,8 +208,7 @@ $(function(){
         if (collision) {
           targs.splice(i,1);
           score += 1;
-          console.log(score);
-          $('.scoreboard > p').html('Shots: ' + shots +'  / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
+          $('scoreboard > p').html('Shots: ' + shots +'  / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
         }
       }
 
