@@ -14,7 +14,7 @@ $(function(){
   var imageSearch = ['greyscale mountains'];
 
   $.ajax({
-    url: 'http://api.pixplorer.co.uk/image?word=' +  imageSearch[Math.floor(Math.random()*imageSearch.length)] + '&amount=1&size=l',
+    url: 'http://api.pixplorer.co.uk/image?word=' + imageSearch[Math.floor(Math.random()*imageSearch.length)] + '&amount=1&size=l',
     type: 'GET',
     dataType: 'json', // added data type
     success: function(res) {
@@ -38,16 +38,17 @@ $(function(){
     obstacles();
   });
 
-  postScore();  
+  postScore();
+
   function obstacles(){
     var basex = (window.innerWidth/2);
     var basey = (window.innerHeight-1)
 
     for (var i = 0; i < 6; i++) {
       var randomx = Math.floor(Math.random()*window.innerWidth);
-      var randomy = Math.floor(Math.random()*(window.innerHeight*0.75-100));
-      var randomw = Math.floor(Math.random()*(window.innerWidth*0.3+50));
-      var randomh = Math.floor(Math.random()*(window.innerHeight*0.3+50));
+      var randomy = Math.floor(Math.random()*((window.innerHeight*0.75)-100));
+      var randomw = Math.floor(Math.random()*((window.innerWidth*0.3))+50);
+      var randomh = Math.floor(Math.random()*((window.innerHeight*0.3))+50);
 
       boxes.push([randomx, randomy, randomw, randomh]);
       ctx.fillStyle = 'rgba(0,255,255,0.75)';
@@ -111,17 +112,6 @@ $(function(){
 
       // vertical collisions
 
-      // for (var i = 0; i < boxes.length; i++) {
-      //
-      //   if ( Math.floor(launchy) == boxes[i][1] || Math.floor(launchy) == boxes[i][1] + boxes[i][3] )  {
-      //     console.log(boxes[i][1]);
-      //
-      //     if ( Math.floor(launchx) >= boxes[i][0] && Math.floor(launchx) <= (boxes[i][0] + boxes[i][2]) )  {
-      //       yv = -yv;
-      //       console.log('hit');
-      //     }
-      //   }
-      // }
 
       if ( Math.floor(launchy) == Math.floor(boxes[0][1]) || Math.floor(launchy) == Math.floor(boxes[0][1] + boxes[0][3]) ) {
         if ( Math.floor(launchx) >= Math.floor(boxes[0][0]) && Math.floor(launchx) <= Math.floor(boxes[0][0] + boxes[0][2]) ) {
@@ -212,83 +202,86 @@ $(function(){
           ctx.closePath();
           ctx.stroke();
           targs.splice(i,1);
-          postScore();        }
+          postScore();
         }
-
-        obstacles();
-        targetDraw();
-        ctx.beginPath();
-        ctx.arc(launchx, launchy, 3, 0, Math.PI*(2));
-        ctx.fillStyle = 'black';
-        ctx.strokeStyle = 'white';
-        ctx.closePath();
-        ctx.stroke();
-        ctx.fill();
-
-        launchx += (xv/(sconstant*1.25));
-        launchy += (yv/(sconstant*1.25));
-        loopcount += 1;
-
-        if (loopcount > 2500){
-          clearInterval(loopTimer);
-          launchx = (window.innerWidth/2);
-          launchy = (window.innerHeight);
-          launch.length = 0;
-          scoreLog();
-          postScore();      }
-        }, 1/10000);
-        ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
-
       }
 
-      $(canvas).on('click', function(e){
-        var xpos = e.pageX;
-        var ypos = e.pageY;
+      obstacles();
+      targetDraw();
+      ctx.beginPath();
+      ctx.arc(launchx, launchy, 3, 0, Math.PI*(2));
+      ctx.fillStyle = 'black';
+      ctx.strokeStyle = 'white';
+      ctx.closePath();
+      ctx.stroke();
+      ctx.fill();
 
-        if (launch.length == 0 && shots != 0){
-          launchx = (window.innerWidth/2);
-          launchy = (window.innerHeight-1)
-          projectile(xpos, ypos);
-          shots -= 1;
+      launchx += (xv/(sconstant*1.25));
+      launchy += (yv/(sconstant*1.25));
+      loopcount += 1;
 
-          postScore();    }
-        })
+      if (loopcount > 2500){
+        clearInterval(loopTimer);
+        launchx = (window.innerWidth/2);
+        launchy = (window.innerHeight);
+        launch.length = 0;
+        scoreLog();
+        postScore();
+      }
+    }, 1/1500);
 
-        function scoreLog() {
+    ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
 
-          if (shots == 0) {
+  }
 
-            if (score > finalScore) {
-              finalScore = score;
-              localStorage.setItem('finalScore', finalScore);
-            }
+  $(canvas).on('click', function(e){
+    var xpos = e.pageX;
+    var ypos = e.pageY;
 
-            postScore();
+    if (launch.length == 0 && shots != 0){
+      launchx = (window.innerWidth/2);
+      launchy = (window.innerHeight-1)
+      projectile(xpos, ypos);
+      shots -= 1;
 
-            function playAgain(){
-              return window.prompt('PLAY AGAIN? ENTER YES OR NO');
-            };
+      postScore();
+    }
+  })
 
-            if (playAgain().toUpperCase() == 'YES') {
-              ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
-              shots = 5;
-              score = 0;
-              launch.length = 0;
-              boxes.length = 0;
-              targs.length = 0;
-              targetsGenerate()
-              targetDraw();
-              obstacles();
+  function scoreLog() {
 
-            }else{
-              $('.gameover > p').html('THANKS FOR PLAYING');
-              $('.gameover > p').removeClass('display');
-            }
-          }
-        }
+    if (shots == 0) {
 
-        function postScore() {
-          $('.scoreboard > p').html('Shots Remaining: ' + shots +'  / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
-        }
+      if (score > finalScore) {
+        finalScore = score;
+        localStorage.setItem('finalScore', finalScore);
+      }
 
-      })
+      postScore();
+
+      function playAgain(){
+        return window.prompt('PLAY AGAIN? ENTER YES OR NO');
+      };
+
+      if (playAgain().toUpperCase() == 'YES') {
+        ctx.clearRect(0,0,window.innerWidth,window.innerHeight);
+        shots = 5;
+        score = 0;
+        launch.length = 0;
+        boxes.length = 0;
+        targs.length = 0;
+        targetsGenerate()
+        targetDraw();
+        obstacles();
+
+      }else{
+        $('.gameover > p').html('THANKS FOR PLAYING');
+      }
+    }
+  }
+
+  function postScore() {
+    $('.scoreboard > p').html('Shots Remaining: ' + shots +'  / Score: ' + score + ' / High Score: ' + localStorage.getItem('finalScore'));
+  }
+
+})
